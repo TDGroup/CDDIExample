@@ -1,5 +1,6 @@
 package com.tdgroup.cicdexample
 
+import android.os.Build
 import android.text.TextUtils
 import android.view.View
 import android.widget.Button
@@ -12,8 +13,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @RunWith(RobolectricTestRunner::class)
 class MainActivityTest {
     lateinit var mActivity : MainActivity
@@ -45,9 +48,12 @@ class MainActivityTest {
 
     @Test
     fun testResult(){
-        valueX.setText(8)
-        valueY.setText(8)
+        valueX.setText("8")
+        valueY.setText("8")
         addButton.performClick()
+        assertEquals(result.getText().toString().trim(),"16")
+
+
     }
 
 
