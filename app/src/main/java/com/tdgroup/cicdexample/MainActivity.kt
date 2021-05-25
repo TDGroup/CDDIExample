@@ -1,26 +1,47 @@
 package com.tdgroup.cicdexample
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.text.TextUtils
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+
 
 class MainActivity : AppCompatActivity() {
+
+    private var valueX: EditText? = null
+    private  var valueY:EditText? = null
+    private var result: TextView? = null
+    private var btnSum: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        initView()
+        btnSum?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                if (TextUtils.isDigitsOnly(valueX!!.text) && TextUtils.isDigitsOnly(valueY!!.getText())) {
+                    Toast.makeText(this@MainActivity, "Tinh Tong", Toast.LENGTH_SHORT).show()
+                    sum()
+                }
+            }
+        })
+    }
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+    private fun initView() {
+        valueX = findViewById<View>(R.id.edt_x) as EditText
+        valueY = findViewById<View>(R.id.edt_y) as EditText
+        result = findViewById<View>(R.id.tv_sum) as TextView
+        btnSum = findViewById<View>(R.id.btn_ok) as Button
+    }
+
+    private fun sum() {
+        val val1 = valueX!!.text.toString().toInt()
+        val val2: Int = valueY!!.getText().toString().toInt()
+        val answer = val1 + val2
+        result!!.text = answer.toString() + ""
     }
 }
