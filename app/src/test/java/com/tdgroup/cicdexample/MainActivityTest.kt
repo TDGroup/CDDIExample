@@ -49,7 +49,7 @@ class MainActivityTest {
     @Test
     fun testResult(){
         valueX.setText("8")
-        valueY.setText("8")
+        valueY.setText("6")
         addButton.performClick()
         assertEquals(result.getText().toString().trim(),"16")
 
