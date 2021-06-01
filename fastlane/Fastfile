@@ -36,6 +36,12 @@ platform :android do
    	task: 'assemble',
    	build_type: 'Release'
  	)
-    upload_to_play_store(track: 'production',release_status: 'draft', skip_upload_apk : true, skip_upload_metadata : true, skip_upload_images : true,skip_upload_changelogs : true)
+    upload_to_play_store(
+      track: 'production',
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
   end
 end
