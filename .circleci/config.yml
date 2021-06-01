@@ -30,7 +30,13 @@ jobs:
       - run:
           name: Assemble release build
           command: |
-            ./gradlew assembleRelease    
+            ./gradlew assembleRelease
+      - run:
+         name: Install fastlane
+         command: bundle install
+      - run:
+         name: Execute fastlane
+         command: bundle exec fastlane playstore
 
 workflows:
   # Below is the definition of your workflow.

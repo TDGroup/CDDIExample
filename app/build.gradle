@@ -2,6 +2,33 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 3
+ext.versionClassifier = null
+ext.isSnapShot = false
+ext.minSdkVersion = 21
+
+private Integer generateVersionCode() {
+    return ext.minSdkVersion * 10000000 + ext.versionMajor * 10000 +
+            ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+
+    if (ext.versionClassifier == null) {
+        if (ext.isSnapShot) {
+            ext.versionClassifier = "SNAPSHOT"
+        }
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifer
+    }
+    return versionName
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -10,13 +37,22 @@ android {
         applicationId "com.tdgroup.cicdexample"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionName generateVersionName()
+        versionCode generateVersionCode()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', "API_KEY", API_KEY
         multiDexEnabled true
 
     }
+    signingConfigs {
+        release {
+            keyAlias 'CICDExample'
+            keyPassword 'CICDExample'
+            storeFile file('../keystore')
+            storePassword 'CICDExample'
+        }
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -26,6 +62,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
